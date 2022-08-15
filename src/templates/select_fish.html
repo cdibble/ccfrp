@@ -1,24 +1,20 @@
-<form method="POST" action="/fish/length">
-  <select name="fish" method="POST" action="/fish/length">
-    <option value="{{fishes[1]}}" selected>{{fishes[1]}}</option>
-    {% for fish in fishes[0][1:] %}
-      <option value="{{fish}}">{{fish}}</option>
-    {% endfor %}
-    <input type="submit" value="Select Fish">
-  <select name="start_date" method="POST" action="/fish/length">
-    <option value="{{dates[1]}}" selected>{{dates[1]}}</option>
-    {% for start_date in dates[0][1:] %}
-      <option value="{{start_date}}">{{start_date}}</option>
-    {% endfor %}
-    <input type="submit" value="Select start_date">
-  </select>  
-</select>
-</form>
-<!-- Table -->
 <html>
   <body>
-    <div>
-      {{ table | safe }}
-    </div>
+
+  <form name="form1" method="POST" action="">
+    <h3>Start Date.</h3>
+    {{ form.start_date (class= "datepicker", value = default_start)}}
+    <h3>End Date.</h3>
+    {{ form.end_date (class= "datepicker", value = default_end)}}
+    <h3>Fish Species Name.</h3>
+    {{ form.fish_name}}
+    <br><br>
+    {{ form.submit }}
+  </form>
+
+<!-- Table -->
+  <div>
+    {{ table | safe }}
+  </div>
   </body>
 </html>
