@@ -1,6 +1,8 @@
 from ccfrp import Ccfrp
 from thefuzz import fuzz, process
 import pandas as pd
+import logging
+module_logger=logging.getLogger(__name__)
 
 
 class Api(Ccfrp):
@@ -8,10 +10,11 @@ class Api(Ccfrp):
         super().__init__(**kwargs)
     #
     def _time_filter(self, df, start_time=None, end_time=None, **kwargs):
+        module_logger.info(f'filtering to start_time: {start_time}')
         if start_time:
-            df = df.loc[df['Date'] >= start_time]
+            df = df.loc[df['Date'] >= pd.to_datetime(start_time)]
         if end_time:
-            df = df.loc[df['Date'] < end_time]
+            df = df.loc[df['Date'] < pd.to_datetime(end_time)]
         return df
     #
     def _fuzzy_get(self, match_str: str, match_choices: list, cutoff: float = 75):
