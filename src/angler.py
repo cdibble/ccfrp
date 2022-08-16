@@ -5,7 +5,7 @@ import logging
 module_logger=logging.getLogger(__name__)
 
 
-class Api(Ccfrp):
+class Angler(Ccfrp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
     #
@@ -79,5 +79,5 @@ class Api(Ccfrp):
 if __name__=='__main__':
     import os
     os.chdir(os.path.dirname(__file__))
-    api=Api()
-    print(api.get_monitoring_area('Bodega'))
+    angler=Angler()
+    print(angler.get_monitoring_area('Bodega'))
