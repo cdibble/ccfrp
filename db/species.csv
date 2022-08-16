@@ -1,0 +1,101 @@
+,Species_Code,Common_Name,Scientific_Name,Kingdom,Phylum,Class,Order,Family,Genus,Species,taxanomic_source,taxanomic_id,species_definition
+0,ANC,Northern Anchovy,Engraulis mordax,Animalia,Chordata,Actinopterygii,Clupeiformes,Engraulidae,Engraulis,Engraulis mordax,www.marinespecies.org,272286,Engraulis mordax
+1,BAR,Pacific Barracuda,Sphyraena argentea,Animalia,Chordata,Actinopterygii,Perciformes,Sphyraenidae,Sphyraena,Sphyraena argentea,www.marinespecies.org,273978,Sphyraena argentea
+2,BAY,Black-and-Yellow Rockfish,Sebastes chrysomelas,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes chrysomelas,www.marinespecies.org,240737,Sebastes chrysomelas
+3,BCO,Bocaccio,Sebastes paucispinis,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes paucispinis,www.marinespecies.org,274833,Sebastes paucispinis
+4,BID,UnID Blue Rockfish,Sebastes mystinus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes mystinus,www.marinespecies.org,274823,Sebastes mystinus
+5,BLA,Black Rockfish,Sebastes melanops,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes melanops,www.marinespecies.org,274817,Sebastes melanops
+6,BLM,Blacksmith,Chromis punctipinnis,Animalia,Chordata,Actinopterygii,Perciformes,Pomacentridae,Chromis,Chromis punctipinnis,www.marinespecies.org,273751,Chromis punctipinnis
+7,BLU,Blue Rockfish,Sebastes mystinus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes mystinus,www.marinespecies.org,274823,Sebastes mystinus
+8,BMS,Bigmouth Sole,Hippoglossina stomata,Animalia,Chordata,Actinopterygii,Pleuronectiformes,Paralichthyidae,Hippoglossina,Hippoglossina stomata,www.marinespecies.org,275827,Hippoglossina stomata
+9,BSB,Barred Sand Bass,Paralabrax nebulifer,Animalia,Chordata,Actinopterygii,Perciformes,Serranidae,Paralabrax,Paralabrax nebulifer,www.marinespecies.org,282059,Paralabrax nebulifer
+10,BSK,Big Skate,Beringraja binoculata,Animalia,Chordata,Elasmobranchii,Rajiformes,Rajidae,Beringraja,Beringraja binoculata,www.marinespecies.org,1021330,Beringraja binoculata
+11,BSP,Black Seaperch,Embiotoca jacksoni,Animalia,Chordata,Actinopterygii,Perciformes,Embiotocidae,Embiotoca,Embiotoca jacksoni,www.marinespecies.org,240746,Embiotoca jacksoni
+12,BUF,Buffalo Sculpin,Enophrys bison,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Cottidae,Enophrys,Enophrys bison,www.marinespecies.org,275355,Enophrys bison
+13,BUS,Bull Sculpin,Enophrys taurina,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Cottidae,Enophrys,Enophrys taurina,www.marinespecies.org,275356,Enophrys taurina
+14,BWN,Brown Rockfish,Sebastes auriculatus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes auriculatus,www.marinespecies.org,274773,Sebastes auriculatus
+15,CAL,Calico Rockfish,Sebastes dalli,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes dalli,www.marinespecies.org,401008,Sebastes dalli
+16,CBZ,Cabezon,Scorpaenichthys marmoratus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Cottidae,Scorpaenichthys,Scorpaenichthys marmoratus,www.marinespecies.org,282726,Scorpaenichthys marmoratus
+17,CHN,China Rockfish,Sebastes nebulosus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes nebulosus,www.marinespecies.org,274824,Sebastes nebulosus
+18,CHP,Chilipepper Rockfish,Sebastes goodei,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes goodei,www.marinespecies.org,274798,Sebastes goodei
+19,CNY,Canary Rockfish,Sebastes pinniger,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes pinniger,www.marinespecies.org,274836,Sebastes pinniger
+20,CPR,Copper Rockfish,Sebastes caurinus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes caurinus,www.marinespecies.org,274780,Sebastes caurinus
+21,CSA,Chinook Salmon,Oncorhynchus tshawytscha,Animalia,Chordata,Actinopterygii,Salmoniformes,Salmonidae,Oncorhynchus,Oncorhynchus tshawytscha,www.marinespecies.org,158075,Oncorhynchus tshawytscha
+22,CSC,California Scorpionfish,Scorpaena guttata,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Scorpaenidae,Scorpaena,Scorpaena guttata,www.marinespecies.org,274713,Scorpaena guttata
+23,DEA,Deacon Rockfish,Sebastes diaconus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes diaconus,www.marinespecies.org,1384909,Sebastes diaconus
+24,FAN,Fantail Sole,Xystreurys liolepis,Animalia,Chordata,Actinopterygii,Pleuronectiformes,Paralichthyidae,Xystreurys,Xystreurys liolepis,www.marinespecies.org,283199,Xystreurys liolepis
+25,FRK,Freckled Rockfish,Sebastes lentiginosus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes lentiginosus,www.marinespecies.org,274811,Sebastes lentiginosus
+26,FST,Finescale Triggerfish,Balistes polylepis,Animalia,Chordata,Actinopterygii,Tetraodontiformes,Balistidae,Balistes,Balistes polylepis,www.marinespecies.org,275234,Balistes polylepis
+27,GAR,Garibaldi,Hypsypops rubicundus,Animalia,Chordata,Actinopterygii,Perciformes,Pomacentridae,Hypsypops,Hypsypops rubicundus,www.marinespecies.org,281130,Hypsypops rubicundus
+28,GPR,Gopher Rockfish,Sebastes carnatus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes carnatus,www.marinespecies.org,274779,Sebastes carnatus
+29,GRS,Grass Rockfish,Sebastes rastrelliger,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes rastrelliger,www.marinespecies.org,274839,Sebastes rastrelliger
+30,GSB,Giant Sea Bass,Stereolepis gigas,Animalia,Chordata,Actinopterygii,Perciformes,Polyprionidae,Stereolepis,Stereolepis gigas,www.marinespecies.org,282884,Stereolepis gigas
+31,HAL,California Halibut,Paralichthys californicus,Animalia,Chordata,Actinopterygii,Pleuronectiformes,Paralichthyidae,Paralichthys,Paralichthys californicus,www.marinespecies.org,275809,Paralichthys californicus
+32,HCR,Honeycomb Rockfish,Sebastes umbrosus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes umbrosus,www.marinespecies.org,274862,Sebastes umbrosus
+33,HLF,Halfmoon,Medialuna californiensis,Animalia,Chordata,Actinopterygii,Perciformes,Kyphosidae,Medialuna,Medialuna californiensis,www.marinespecies.org,281541,Medialuna californiensis
+34,JMK,Jack Mackerel,Trachurus symmetricus,Animalia,Chordata,Actinopterygii,Perciformes,Carangidae,Trachurus,Trachurus symmetricus,www.marinespecies.org,273305,Trachurus symmetricus
+35,JSM,Jack Smelt,Atherinopsis californiensis,Animalia,Chordata,Actinopterygii,Atheriniformes,Atherinidae,Atherinopsis,Atherinopsis californiensis,www.marinespecies.org,279813,Atherinopsis californiensis
+36,KGL,Kelp Greenling,Hexagrammos decagrammus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Hexagrammidae,Hexagrammos,Hexagrammos decagrammus,www.marinespecies.org,240732,Hexagrammos decagrammus
+37,KLP,Kelp Rockfish,Sebastes atrovirens,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes atrovirens,www.marinespecies.org,274772,Sebastes atrovirens
+38,KPB,Kelp Bass,Paralabrax clathratus,Animalia,Chordata,Actinopterygii,Perciformes,Serranidae,Paralabrax,Paralabrax clathratus,www.marinespecies.org,282054,Paralabrax clathratus
+39,LCD,Lingcod,Ophiodon elongatus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Hexagrammidae,Ophiodon,Ophiodon elongatus,www.marinespecies.org,240745,Ophiodon elongatus
+40,LEZ,California Lizardfish,Synodus lucioceps,Animalia,Chordata,Actinopterygii,Aulopiformes,Synodontidae,Synodus,Synodus lucioceps,www.marinespecies.org,272132,Synodus lucioceps
+41,LSD,Longfin Sanddab,Citharichthys xanthostigma,Animalia,Chordata,Actinopterygii,Pleuronectiformes,Paralichthyidae,Citharichthys,Citharichthys xanthostigma,www.marinespecies.org,275699,Citharichthys xanthostigma
+42,MKL,Mackerel (Family Scombridae),Scombridae,Animalia,Chordata,Actinopterygii,Perciformes,Scombridae,,,www.marinespecies.org,125559,Mackerel only identified up to family - Scombridae
+43,NBL,Northern Blue Rockfish,Sebastes,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes,www.marinespecies.org,126175,Sebastes
+44,OLV,Olive Rockfish,Sebastes serranoides,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes serranoides,www.marinespecies.org,274852,Sebastes serranoides
+45,OPL,Opaleye,Girella nigricans,Animalia,Chordata,Actinopterygii,Perciformes,Kyphosidae,Girella,Girella nigricans,www.marinespecies.org,280865,Girella nigricans
+46,OYT,Olive or Yellowtail Rockfish,Sebastes serranoides or flavidus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes serranoides or flavidus,www.marinespecies.org,126175,Could not decipher between Yellowtail or Olive Rockfish (274795 or 274852)
+47,PBO,Pacific Bonito,Sarda chiliensis,Animalia,Chordata,Actinopterygii,Perciformes,Scombridae,Sarda,Sarda chiliensis,www.marinespecies.org,273810,Sarda chiliensis
+48,PGL,Painted Greenling,Oxylebius pictus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Hexagrammidae,Oxylebius,Oxylebius pictus,www.marinespecies.org,240743,Oxylebius pictus
+49,PHL,Pacific Halibut,Hippoglossus stenolepis,Animalia,Chordata,Actinopterygii,Pleuronectiformes,Pleuronectidae,Hippoglossus,Hippoglossus stenolepis,www.marinespecies.org,274290,Hippoglossus stenolepis
+50,PLP,Pile Perch,Rhacochilus vacca,Animalia,Chordata,Actinopterygii,Perciformes,Embiotocidae,Rhacochilus,Rhacochilus vacca,www.marinespecies.org,282576,Rhacochilus vacca
+51,PMK,Pacific  (Chub) Mackerel,Scomber japonicus,Animalia,Chordata,Actinopterygii,Perciformes,Scombridae,Scomber,Scomber japonicus,www.marinespecies.org,127022,Scomber japonicus
+52,PSD,Pacific Sanddab,Citharichthys sordidus,Animalia,Chordata,Actinopterygii,Pleuronectiformes,Paralichthyidae,Citharichthys,Citharichthys sordidus,www.marinespecies.org,275694,Citharichthys sordidus
+53,PSL,Petrale Sole,Eopsetta jordani,Animalia,Chordata,Actinopterygii,Pleuronectiformes,Pleuronectidae,Eopsetta,Eopsetta jordani,www.marinespecies.org,280690,Eopsetta jordani
+54,PSR,Pelagic Stingray,Pteroplatytrygon violacea,Animalia,Chordata,Elasmobranchii,Myliobatiformes,Dasyatidae,Pteroplatytrygon,Pteroplatytrygon violacea,www.marinespecies.org,158540,Pteroplatytrygon violacea
+55,QBK,Quillback Rockfish,Sebastes maliger,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes maliger,www.marinespecies.org,274815,Sebastes maliger
+56,RAY,Bat Ray,Myliobatis californica,Animalia,Chordata,Elasmobranchii,Myliobatiformes,Myliobatidae,Myliobatis,Myliobatis californica,www.marinespecies.org,271485,Myliobatis californica
+57,RGL,Rock Greenling,Hexagrammos lagocephalus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Hexagrammidae,Hexagrammos,Hexagrammos lagocephalus,www.marinespecies.org,240735,Hexagrammos lagocephalus
+58,RLS,Rubberlip Seaperch,Rhacochilus toxotes,Animalia,Chordata,Actinopterygii,Perciformes,Embiotocidae,Rhacochilus,Rhacochilus toxotes,www.marinespecies.org,282575,Rhacochilus toxotes
+59,RSL,Rock Sole,Lepidopsetta bilineata,Animalia,Chordata,Actinopterygii,Pleuronectiformes,Pleuronectidae,Lepidopsetta,Lepidopsetta bilineata,www.marinespecies.org,281305,Lepidopsetta bilineata
+60,RSP,Rainbow Seaperch,Hypsurus caryi,Animalia,Chordata,Actinopterygii,Perciformes,Embiotocidae,Hypsurus,Hypsurus caryi,www.marinespecies.org,240717,Hypsurus caryi
+61,RSY,Rosy Rockfish,Sebastes rosaceus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes rosaceus,www.marinespecies.org,274841,Sebastes rosaceus
+62,RWS,Rock Wrasse,Halichoeres semicinctus,Animalia,Chordata,Actinopterygii,Perciformes,Labridae,Halichoeres,Halichoeres semicinctus,www.marinespecies.org,275798,Halichoeres semicinctus
+63,SAL,Salema,Xenistius californiensis,Animalia,Chordata,Actinopterygii,Perciformes,Haemulidae,Xenistius,Xenistius californiensis,www.marinespecies.org,283178,Xenistius californiensis
+64,SDB,Sanddab spp.,Citharichthys,Animalia,Chordata,Actinopterygii,Pleuronectiformes,Paralichthyidae,Citharichthys,Citharichthys,www.marinespecies.org,158786,Citharichthys
+65,SDF,Spiny Dogfish,Squalus acanthias,Animalia,Chordata,Elasmobranchii,Squaliformes,Squalidae,Squalus,Squalus acanthias,www.marinespecies.org,105923,Squalus acanthias
+66,SEN,Senorita,Oxyjulis californica,Animalia,Chordata,Actinopterygii,Perciformes,Labridae,Oxyjulis,Oxyjulis californica,www.marinespecies.org,240727,Oxyjulis californica
+67,SHP,California Sheephead,Semicossyphus pulcher,Animalia,Chordata,Actinopterygii,Perciformes,Labridae,Semicossyphus,Semicossyphus pulcher,www.marinespecies.org,282753,Semicossyphus pulcher
+68,SHS,Scalyhead Sculpin,Artedius harringtoni,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Cottidae,Artedius,Artedius harringtoni,www.marinespecies.org,279701,Artedius harringtoni
+69,SLV,Silver Salmon,Oncorhynchus kisutch,Animalia,Chordata,Actinopterygii,Salmoniformes,Salmonidae,Oncorhynchus,Oncorhynchus kisutch,www.marinespecies.org,127184,Oncorhynchus kisutch
+70,SMT,Silversides (Family Atherinopsidae),Atherinopsidae,Animalia,Chordata,Actinopterygii,Atheriniformes,Atherinopsidae,,,www.marinespecies.org,266995,Silversides only identified up to family - Atherinopsidae
+71,SPF,Soupfin Shark,Galeorhinus galeus,Animalia,Chordata,Elasmobranchii,Carcharhiniformes,Triakidae,Galeorhinus,Galeorhinus galeus,www.marinespecies.org,105820,Galeorhinus galeus
+72,SQR,Squarespot Rockfish,Sebastes hopkinsi,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes hopkinsi,www.marinespecies.org,274800,Sebastes hopkinsi
+73,SRC,Sarcastic Fringehead,Neoclinus blanchardi,Animalia,Chordata,Actinopterygii,Perciformes,Chaenopsidae,Neoclinus,Neoclinus blanchardi,www.marinespecies.org,281679,Neoclinus blanchardi
+74,SRD,Pacific Sardine,Sardinops sagax,Animalia,Chordata,Actinopterygii,Clupeiformes,Clupeidae,Sardinops,Sardinops sagax,www.marinespecies.org,217452,Sardinops sagax
+75,SRG,Sargo,Anisotremus davidsonii,Animalia,Chordata,Actinopterygii,Perciformes,Haemulidae,Anisotremus,Anisotremus davidsonii,www.marinespecies.org,279617,Anisotremus davidsonii
+76,SRP,Sharpnose Surfperch,Phanerodon atripes,Animalia,Chordata,Actinopterygii,Perciformes,Embiotocidae,Phanerodon,Phanerodon atripes,www.marinespecies.org,279409,Phanerodon atripes
+77,SRY,Starry Rockfish,Sebastes constellatus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes constellatus,www.marinespecies.org,274783,Sebastes constellatus
+78,SSD,Speckled Sanddab,Citharichthys stigmaeus,Animalia,Chordata,Actinopterygii,Pleuronectiformes,Paralichthyidae,Citharichthys,Citharichthys stigmaeus,www.marinespecies.org,275696,Citharichthys stigmaeus
+79,SSL,Sand Sole,Psettichthys melanostictus,Animalia,Chordata,Actinopterygii,Pleuronectiformes,Pleuronectidae,Psettichthys,Psettichthys melanostictus,www.marinespecies.org,282396,Psettichthys melanostictus
+80,SSP,Striped Seaperch,Embiotoca lateralis,Animalia,Chordata,Actinopterygii,Perciformes,Embiotocidae,Embiotoca,Embiotoca lateralis,www.marinespecies.org,240740,Embiotoca lateralis
+81,STS,Starry Skate,Beringraja stellulata,Animalia,Chordata,Actinopterygii,Rajiformes,Rajidae,Beringraja,Beringraja stellulata,www.marinespecies.org,1461135,Beringraja stellulata
+82,SUN,Ocean Sunfish,Mola mola,Animalia,Chordata,Actinopterygii,Tetraodontiformes,Molidae,Mola,Mola mola,www.marinespecies.org,127405,Mola mola
+83,THR,Common Thresher Shark,Alopias vulpinus,Animalia,Chordata,Elasmobranchii,Lamniformes,Alopiidae,Alopias,Alopias vulpinus,www.marinespecies.org,105836,Alopias vulpinus
+84,TIG,Tiger Rockfish,Sebastes nigrocinctus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes nigrocinctus,www.marinespecies.org,274825,Sebastes nigrocinctus
+85,TRE,Treefish,Sebastes serriceps,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes serriceps,www.marinespecies.org,274853,Sebastes serriceps
+86,TSM,Top smelt,Atherinops affinis,Animalia,Chordata,Actinopterygii,Atheriniformes,Atherinidae,Atherinops,Atherinops affinis,www.marinespecies.org,279812,Atherinops affinis
+87,TUB,Tubesnout,Aulorhynchus flavidus,Animalia,Chordata,Actinopterygii,Gasterosteiformes,Aulorhynchidae,Aulorhynchus,Aulorhynchus flavidus,www.marinespecies.org,279839,Aulorhynchus flavidus
+88,UKR,Unknown rockfish,Sebastes,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,,www.marinespecies.org,126175,Only identified up to order Sebastes
+89,UNK,Unknown,,Animalia,Chordata,,,,,,www.marinespecies.org,1821,Species not recorded - Most likely from the Actinopterygii or Elasmobranchii class
+90,VER,Vermilion Rockfish,Sebastes miniatus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes miniatus,www.marinespecies.org,274820,Sebastes miniatus
+91,WCR,White Croaker,Genyonemus lineatus,Animalia,Chordata,Actinopterygii,Perciformes,Sciaenidae,Genyonemus,Genyonemus lineatus,www.marinespecies.org,280830,Genyonemus lineatus
+92,WHT,Ocean Whitefish,Caulolatilus princeps,Animalia,Chordata,Actinopterygii,Perciformes,Malacanthidae,Caulolatilus,Caulolatilus princeps,www.marinespecies.org,276217,Caulolatilus princeps
+93,WID,Widow Rockfish,Sebastes entomelas,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes entomelas,www.marinespecies.org,274791,Sebastes entomelas
+94,WLF,Wolf Eel,Anarrhichthys ocellatus,Animalia,Chordata,Actinopterygii,Perciformes,Anarhichadidae,Anarrhichthys,Anarrhichthys ocellatus,www.marinespecies.org,279605,Anarrhichthys ocellatus
+95,WSB,White Seabass,Atractoscion nobilis,Animalia,Chordata,Actinopterygii,Perciformes,Sciaenidae,Atractoscion,Atractoscion nobilis,www.marinespecies.org,278535,Atractoscion nobilis
+96,YFC,Yellowfin Croaker,Umbrina roncador,Animalia,Chordata,Actinopterygii,Perciformes,Sciaenidae,Umbrina,Umbrina roncador,www.marinespecies.org,273802,Umbrina roncador
+97,YLE,Yelloweye Rockfish,Sebastes ruberrimus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes ruberrimus,www.marinespecies.org,274844,Sebastes ruberrimus
+98,YTJ,Yellowtail Jack,Seriola lalandi,Animalia,Chordata,Actinopterygii,Perciformes,Carangidae,Seriola,Seriola lalandi,www.marinespecies.org,218436,Seriola lalandi
+99,YTL,Yellowtail Rockfish,Sebastes flavidus,Animalia,Chordata,Actinopterygii,Scorpaeniformes,Sebastidae,Sebasetes,Sebastes flavidus,www.marinespecies.org,274795,Sebastes flavidus

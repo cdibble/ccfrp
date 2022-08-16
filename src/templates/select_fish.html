@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> 
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script> -->
+  </head>
+  <body>
+
+  <form name="form1" method="POST" action="{{url_for('/fish/length/map')}}">
+    <h3>Start Date. {{ form.start_date (class= "datepicker", value = default_start)}}
+    &nbsp End Date. {{ form.end_date (class= "datepicker", value = default_end)}} </h3>
+    <h3>Fish Species Name. {{ form.fish_name}}</h3>
+    {{ form.submit }}
+  </form>
+
+<!-- Table -->
+  <div>
+    {{ plt_html | safe }}
+  </div>
+  <div>
+    {{ table | safe }}
+  </div>
+</body>
+
+</html>
