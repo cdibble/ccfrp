@@ -15,6 +15,7 @@ from flask_wtf import FlaskForm
 import plotly_express as px
 import plotly
 import geojson
+from geojson import Polygon, FeatureCollection, dumps, Feature
 import json
 from api import api
 import pandas as pd
@@ -47,19 +48,27 @@ def home_page():
 # -----------
 # Fish Length
 # -----------
+def create_features(df):
+    features=[]
+    for grid_cell in df.Grid_Cell_ID.unique():
+        df_gc = df.loc[df['Grid_Cell_ID'] == grid_cell]
+        Area = df_gc.Area.unique()[0]
+        MPA_Status = df_gc.MPA_Status.unique()[0]
+        all_lats = df_gc['value_y'].to_list()
+        all_lons = df_gc['value_x'].tolist()
+        feat_i = Feature(
+            id = grid_cell,
+            geometry =
+                Polygon(
+                    coordinates = [[*list(zip(all_lats,all_lons)), *[(all_lats[0], all_lons[0])]]]
+                ),
+            properties={'Area': Area, 'MPA_Status': MPA_Status}
+            )
+        features.append(feat_i)
+    return features
 
-def melt_df(df):
-    mdf = df[['Grid_Cell_ID', 'Area', 'Site', 'lat_1_dd', 'lon_1_dd', 'lat_2_dd','lon_2_dd', 'lat_3_dd', 'lon_3_dd', 'lat_4_dd', 'lon_4_dd']].melt(
-        id_vars = ['Grid_Cell_ID', 'Area', 'Site'])
-    mdf['point_no'] = mdf.variable.str[4]
-    mdf = mdf.groupby(['Grid_Cell_ID', 'Area', 'Site', 'point_no', 'variable']).mean().reset_index()
-    lats = mdf.loc[mdf.variable.str.startswith('lat')]
-    lons = mdf.loc[mdf.variable.str.startswith('lon')]
-    df = pd.merge(lats,lons,on=['Grid_Cell_ID', 'Area', 'Site', 'point_no']).drop(columns=['variable_x', 'variable_y'])
-    return df
 
-def fish_length_map_prep(common_name: str, start_time:str, end_time: str):
-    from geojson import Polygon, FeatureCollection, dumps, Feature
+def fish_length_map_prep(common_name: str = None, start_time:str = None, end_time: str = None):
     angler = Angler()
     df = angler.get_df(
         'length',
@@ -78,26 +87,11 @@ def fish_length_map_prep(common_name: str, start_time:str, end_time: str):
         df['lat_3_dd'].isna() |
         df['lat_4_dd'].isna()
     )]
-    gdf = melt_df(df)
-    features=[]
-    for grid_cell in gdf.Grid_Cell_ID.unique():
-        df_gc = gdf.loc[gdf['Grid_Cell_ID'] == grid_cell]
-        Area = df_gc.Area.unique()[0]
-        Site = df_gc.Site.unique()[0]
-        all_lats = df_gc['value_y'].to_list()
-        all_lons = df_gc['value_x'].tolist()
-        feat_i = Feature(
-            id = grid_cell,
-            geometry =
-                Polygon(
-                    coordinates = [[*list(zip(all_lats,all_lons)), *[(all_lats[0], all_lons[0])]]]
-                ),
-            properties={'Area': Area, 'Site': Site}
-            )
-        features.append(feat_i)
-    geo = FeatureCollection(features)
+    gdf = angler.melt_df(df)
+    geo = FeatureCollection(create_features(gdf))
     df = df[['Grid_Cell_ID', 'Length_cm']].groupby('Grid_Cell_ID').mean().reset_index()
     return df, geo
+
 
 def make_chloropleth_length(df, geo):
     fig = px.choropleth_mapbox(
@@ -110,11 +104,14 @@ def make_chloropleth_length(df, geo):
         color_continuous_scale='Viridis',
         center={"lat": 33, "lon": -123},
         mapbox_style="carto-positron",
+        hover_data=["Grid_Cell_ID", "Length_cm"],
         zoom=7
         )
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+
     # graphJSON = json.dumps([fig], cls=plotly.utils.PlotlyJSONEncoder)
     return fig
+
 
 @app.route("/fish/length", methods = ['GET', 'POST'])
 def fish_length():
