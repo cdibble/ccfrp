@@ -1,3 +1,4 @@
+from tokenize import group
 from ccfrp import Ccfrp
 from thefuzz import fuzz, process
 import pandas as pd
@@ -65,14 +66,18 @@ class Angler(Ccfrp):
         location_summary = self.location[['Area', 'MPA_Status', 'lat_1_dd', 'lon_1_dd', 'lat_2_dd','lon_2_dd', 'lat_3_dd', 'lon_3_dd', 'lat_4_dd', 'lon_4_dd']].groupby(['Area', 'MPA_Status']).mean().reset_index()
         return location_summary
     # melt dataframe
-    def melt_df(self, df):
-        mdf = df[['Grid_Cell_ID', 'Area', 'MPA_Status', 'lat_1_dd', 'lon_1_dd', 'lat_2_dd','lon_2_dd', 'lat_3_dd', 'lon_3_dd', 'lat_4_dd', 'lon_4_dd']].melt(
-            id_vars = ['Grid_Cell_ID', 'Area', 'MPA_Status'])
+    def melt_df(self, df, grouping_vars: list = ['Grid_Cell_ID', 'Area', 'MPA_Status'], **kwargs):
+        '''
+        Gets a melted dataframe of location info.
+        Can be used with self.location or any result of self.get_df() (since those have been joined with self.location)
+        '''
+        mdf = df[[*grouping_vars, *['lat_1_dd', 'lon_1_dd', 'lat_2_dd','lon_2_dd', 'lat_3_dd', 'lon_3_dd', 'lat_4_dd', 'lon_4_dd']]].melt(
+            id_vars = grouping_vars)
         mdf['point_no'] = mdf.variable.str[4]
-        mdf = mdf.groupby(['Grid_Cell_ID', 'Area', 'MPA_Status', 'point_no', 'variable']).mean().reset_index()
+        mdf = mdf.groupby([*grouping_vars, *['point_no', 'variable']]).mean().reset_index()
         lats = mdf.loc[mdf.variable.str.startswith('lat')]
         lons = mdf.loc[mdf.variable.str.startswith('lon')]
-        df = pd.merge(lats,lons,on=['Grid_Cell_ID', 'Area', 'MPA_Status', 'point_no']).drop(columns=['variable_x', 'variable_y'])
+        df = pd.merge(lats,lons,on=[*grouping_vars, *['point_no']]).drop(columns=['variable_x', 'variable_y'])
         return df
     #
     def get_df(self, type: str, common_name: str = None, monitoring_area: str = None, mpa_only: bool = False, **kwargs):
