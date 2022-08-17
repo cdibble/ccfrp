@@ -27,14 +27,18 @@ class Angler(Ccfrp):
     def _join_location(self, df):
         return pd.merge(
             df,
-            self.location,
+            self.location[
+                [x for x in self.location.columns if ((x not in df.columns) | (x in ['Area', 'Grid_Cell_ID']))]
+                ],
             how = 'left',
             on = ['Area', 'Grid_Cell_ID']
         )
     def _join_species(self, df: pd.DataFrame):
         return pd.merge(
             df,
-            self.species,
+            self.species[
+                [x for x in self.species.columns if ((x not in df.columns) | (x in ['Common_Name']))]
+                ],
             how = 'left',
             on = ['Common_Name']
         )
@@ -56,6 +60,20 @@ class Angler(Ccfrp):
         areas = self.location.Area.unique()
         monitoring_area = self._fuzzy_get(monitoring_area, areas)
         return monitoring_area
+    # get summary of location
+    def get_location_summary(self):
+        location_summary = self.location[['Area', 'MPA_Status', 'lat_1_dd', 'lon_1_dd', 'lat_2_dd','lon_2_dd', 'lat_3_dd', 'lon_3_dd', 'lat_4_dd', 'lon_4_dd']].groupby(['Area', 'MPA_Status']).mean().reset_index()
+        return location_summary
+    # melt dataframe
+    def melt_df(self, df):
+        mdf = df[['Grid_Cell_ID', 'Area', 'MPA_Status', 'lat_1_dd', 'lon_1_dd', 'lat_2_dd','lon_2_dd', 'lat_3_dd', 'lon_3_dd', 'lat_4_dd', 'lon_4_dd']].melt(
+            id_vars = ['Grid_Cell_ID', 'Area', 'MPA_Status'])
+        mdf['point_no'] = mdf.variable.str[4]
+        mdf = mdf.groupby(['Grid_Cell_ID', 'Area', 'MPA_Status', 'point_no', 'variable']).mean().reset_index()
+        lats = mdf.loc[mdf.variable.str.startswith('lat')]
+        lons = mdf.loc[mdf.variable.str.startswith('lon')]
+        df = pd.merge(lats,lons,on=['Grid_Cell_ID', 'Area', 'MPA_Status', 'point_no']).drop(columns=['variable_x', 'variable_y'])
+        return df
     #
     def get_df(self, type: str, common_name: str = None, monitoring_area: str = None, mpa_only: bool = False, **kwargs):
         if type == 'length':
@@ -74,7 +92,7 @@ class Angler(Ccfrp):
         fish_df = self._join_location(fish_df)
         fish_df = self._join_species(fish_df)
         return fish_df
-    
+
 
 if __name__=='__main__':
     import os
