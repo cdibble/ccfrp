@@ -88,6 +88,7 @@ def fish_length_map_prep(df: pd.DataFrame = None, common_name: str = None, start
         df['lat_4_dd'].isna()
     )]
     gdf = angler.melt_df(df, **kwargs)
+    # gpdf = geopandas.GeoDataFrame(gdf, geometry=geopandas.points_from_xy(gdf.value_x, gdf.value_y)).drop(columns=['value_x', 'value_y'])
     geo = FeatureCollection(create_features(gdf, id_column=id_column, **kwargs))
     df = df[[id_column, 'Length_cm']].groupby(id_column).mean().reset_index()
     return df, geo
@@ -198,24 +199,29 @@ def fish_length_map_area_post():
         start_time=form.data.get('start_date'),
         end_time=form.data.get('end_date')
     )
-    fishdf['Area_MPA_Status'] = fishdf['Area'].str.cat(fishdf['MPA_Status'], sep = ' ')
-    area_df, area_geo = fish_length_map_prep(
-        df = fishdf,
-        id_column='Area_MPA_Status',
-        grouping_vars=['Area_MPA_Status'],
-        feat_properties=['Area_MPA_Status']
-    )
-    fig = make_chloropleth_length(area_df, area_geo, 'Area_MPA_Status')
-    graphJSON = json.dumps([fig], cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template(
-        'select_fish_area.html',
-        form=form,
-        # table = df.sort_values('Date').to_html(),
-        # graphJSON = graphJSON,
-        plt_html=fig.to_html(),
-        default_start = form.data.get('start_date'),
-        default_end = form.data.get('end_date'),
-        )
+    mdf = angler.get_location_summary(df=angler.location)
+    mdf['Area_MPA_Status'] = mdf['Area'].str.cat(mdf['MPA_Status'], sep = ' ')
+    mdf = mdf[['Area_MPA_Status', 'geometry']].dissolve('Area_MPA_Status')
+    # from here, we can join these geos onto the fishdf as needed...
+    # TODO: Refactor fish_length_map_prep and create_features to use the geopandas approach
+    area_geo = mdf.set_index('Area_MPA_Status').to_json()
+    # area_df, area_geo = fish_length_map_prep(
+    #     df = fishdf,
+    #     id_column='Area_MPA_Status',
+    #     grouping_vars=['Area_MPA_Status'],
+    #     feat_properties=['Area_MPA_Status']
+    # )
+    # fig = make_chloropleth_length(area_df, area_geo, 'Area_MPA_Status')
+    # graphJSON = json.dumps([fig], cls=plotly.utils.PlotlyJSONEncoder)
+    # return render_template(
+    #     'select_fish_area.html',
+    #     form=form,
+    #     # table = df.sort_values('Date').to_html(),
+    #     # graphJSON = graphJSON,
+    #     plt_html=fig.to_html(),
+    #     default_start = form.data.get('start_date'),
+    #     default_end = form.data.get('end_date'),
+    #     )
 
 
 
