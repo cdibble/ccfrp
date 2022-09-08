@@ -1,7 +1,9 @@
 from tokenize import group
 from ccfrp import Ccfrp
-from thefuzz import fuzz, process
+# from thefuzz import fuzz, process
 import pandas as pd
+import shapely
+import geopandas
 import logging
 module_logger=logging.getLogger(__name__)
 
@@ -61,10 +63,48 @@ class Angler(Ccfrp):
         areas = self.location.Area.unique()
         monitoring_area = self._fuzzy_get(monitoring_area, areas)
         return monitoring_area
-    # get summary of location
-    def get_location_summary(self):
+    # get mean bounding points of each location
+    def get_location_means(self):
         location_summary = self.location[['Area', 'MPA_Status', 'lat_1_dd', 'lon_1_dd', 'lat_2_dd','lon_2_dd', 'lat_3_dd', 'lon_3_dd', 'lat_4_dd', 'lon_4_dd']].groupby(['Area', 'MPA_Status']).mean().reset_index()
         return location_summary
+    #
+    def get_location_summary(self, df: pd.DataFrame = None, grouping_vars: list = ['Grid_Cell_ID', 'Area', 'MPA_Status'], **kwargs):
+        '''
+        Compute Polygons bounding each Area/MPA_Status/Grid_Cell_ID.
+        Return a geodataframe with the geometry set to Polygons bounding each area.
+        Can be used with self.location or any result of self.get_df() (since those have been joined with self.location)
+        '''
+        if df is not None:
+            df = self.location
+        raw_lat_lon_cols = ['lat_1_dd', 'lon_1_dd', 'lat_2_dd','lon_2_dd', 'lat_3_dd', 'lon_3_dd', 'lat_4_dd', 'lon_4_dd']
+        df = df[~(
+            df['lon_1_dd'].isna() |
+            df['lon_2_dd'].isna() |
+            df['lon_3_dd'].isna() |
+            df['lon_4_dd'].isna() |
+            df['lat_1_dd'].isna() |
+            df['lat_2_dd'].isna() |
+            df['lat_3_dd'].isna() |
+            df['lat_4_dd'].isna()
+        )]
+        mdf = df[[*grouping_vars, *raw_lat_lon_cols]]
+        # create a set, since there are many observations (one for each fish, not just one for each grid)
+        mdf = mdf.groupby([*grouping_vars]).mean()
+        mdf['poly'] = mdf.apply(lambda row: shapely.geometry.Polygon([
+            (row.lon_1_dd, row.lat_1_dd),
+            (row.lon_2_dd, row.lat_2_dd),
+            (row.lon_3_dd, row.lat_3_dd),
+            (row.lon_4_dd, row.lat_4_dd)
+        ]), axis = 1)
+        mdf = mdf.drop(columns = raw_lat_lon_cols).reset_index()
+        mdf = geopandas.GeoDataFrame(mdf, geometry=mdf.poly).drop(columns='poly')
+        # Now we are set to dissolve the Grid Cells.
+        # But there are some bad geos that do not produce
+            # valid Polygons. These need to be fixed via convex_hull
+        mdf.loc[~mdf.geometry.apply(lambda x: x.is_valid), 'geometry'] = mdf.loc[~mdf.geometry.apply(lambda x: x.is_valid), 'geometry'].apply(lambda y: y.convex_hull)
+        assert mdf.loc[~mdf.geometry.apply(lambda x: x.is_valid), 'geometry'].empty
+        return mdf
+    #
     # melt dataframe
     def melt_df(self, df, grouping_vars: list = ['Grid_Cell_ID', 'Area', 'MPA_Status'], **kwargs):
         '''
