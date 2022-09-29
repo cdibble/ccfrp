@@ -6,7 +6,9 @@ import shapely
 import geopandas
 import logging
 module_logger=logging.getLogger(__name__)
-
+from geojson import Polygon, FeatureCollection, dumps, Feature, Point
+import geopandas
+import shapely
 
 class Angler(Ccfrp):
     def __init__(self, **kwargs):
@@ -117,7 +119,55 @@ class Angler(Ccfrp):
         mdf = mdf.groupby([*grouping_vars, *['point_no', 'variable']]).mean().reset_index()
         lats = mdf.loc[mdf.variable.str.startswith('lat')]
         lons = mdf.loc[mdf.variable.str.startswith('lon')]
-        df = pd.merge(lats,lons,on=[*grouping_vars, *['point_no']]).drop(columns=['variable_x', 'variable_y'])
+        df = pd.merge(lons, lats,on=[*grouping_vars, *['point_no']]).drop(columns=['variable_x', 'variable_y'])
+        return df
+    # 
+    def make_location_polygons(self):
+        '''
+        I want to turn the location df into a spatial df right away so that its easier to compute full extent of groups of polygons
+        '''
+        df = self.location
+        df = df[~(
+            df['lon_1_dd'].isna() |
+            df['lon_2_dd'].isna() |
+            df['lon_3_dd'].isna() |
+            df['lon_4_dd'].isna() |
+            df['lat_1_dd'].isna() |
+            df['lat_2_dd'].isna() |
+            df['lat_3_dd'].isna() |
+            df['lat_4_dd'].isna()
+        )]
+        df.loc[:, 'point_1'] = geopandas.points_from_xy(df['lon_1_dd'], df['lat_1_dd'])
+        df.loc[:, 'point_2'] = geopandas.points_from_xy(df['lon_2_dd'], df['lat_2_dd'])
+        df.loc[:, 'point_3'] = geopandas.points_from_xy(df['lon_3_dd'], df['lat_3_dd'])
+        df.loc[:, 'point_4'] = geopandas.points_from_xy(df['lon_4_dd'], df['lat_4_dd'])
+        df = df[['LTM_project_short_code', 'Monitoring_Group', 'Area',
+        'MPA_names', 'CA_MPA_name_short', 'Grid_Cell_ID', 'Area_Code',
+        'MPA_Status', 'point_1',
+        'point_2', 'point_3', 'point_4']]
+        df.loc[:, 'all_points'] = df[['point_1', 'point_2', 'point_3', 'point_4']].values.tolist()
+        df.loc[:, 'poly'] = df['all_points'].apply(lambda x: shapely.geometry.Polygon([[point.x, point.y] for point in x]))
+        gdf = geopandas.GeoDataFrame(df, geometry='poly')
+        # sub_gdf = gdf[gdf.poly.apply(lambda x: x.is_valid)].dissolve(by=['Area', 'MPA_Status']).reset_index()
+        # sub_gdf.loc[sub_gdf.Area == 'Anacapa Island'].total_bounds
+        return gdf
+    def melt_df_area(self, df, grouping_vars: list = ['Grid_Cell_ID', 'Area', 'MPA_Status'], **kwargs):
+        '''
+        Gets a melted dataframe of location info.
+        Can be used with self.location or any result of self.get_df() (since those have been joined with self.location)
+        '''
+        mdf = df[[
+                *grouping_vars,
+                *['lat_1_dd', 'lon_1_dd', 'lat_2_dd','lon_2_dd', 'lat_3_dd', 'lon_3_dd', 'lat_4_dd', 'lon_4_dd']
+            ]].melt(
+            id_vars = grouping_vars)
+        min_lon = mdf.loc[mdf['variable'].str.startswith('lon')].groupby(['Area_MPA_Status']).apply(lambda g: g.min()).drop(columns=['Area_MPA_Status']).reset_index()
+        max_lon = mdf.loc[mdf['variable'].str.startswith('lon')].groupby(['Area_MPA_Status']).apply(lambda g: g.max()).drop(columns=['Area_MPA_Status']).reset_index()
+        min_lat = mdf.loc[mdf['variable'].str.startswith('lat')].groupby(['Area_MPA_Status']).apply(lambda g: g.min()).drop(columns=['Area_MPA_Status']).reset_index()
+        max_lat = mdf.loc[mdf['variable'].str.startswith('lat')].groupby(['Area_MPA_Status']).apply(lambda g: g.max()).drop(columns=['Area_MPA_Status']).reset_index()
+        lons = pd.concat([min_lon, max_lon])
+        lats = pd.concat([min_lat, max_lat])
+        df = pd.merge(lons, lats, on = ['Area_MPA_Status']).drop(columns=['variable_x', 'variable_y']).sort_values(['value_y', 'value_x'], ascending=[False, False]) #.groupby(['Area_MPA_Status']).mean().reset_index()
         return df
     #
     def get_df(self, type: str, common_name: str = None, monitoring_area: str = None, mpa_only: bool = False, **kwargs):
