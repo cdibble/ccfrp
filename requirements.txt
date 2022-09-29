@@ -1,4 +1,9 @@
 pandas
-# tinyflux
 flask
-'thefuzz[speedup]'
+flask_wtf
+plotly_express
+thefuzz[speedup]
+shapely
+geopandas
+geojson
+wtforms
