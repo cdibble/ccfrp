@@ -1,6 +1,6 @@
 from tokenize import group
 from ccfrp import Ccfrp
-# from thefuzz import fuzz, process
+from thefuzz import fuzz, process
 import pandas as pd
 import shapely
 import geopandas
@@ -76,7 +76,8 @@ class Angler(Ccfrp):
         Return a geodataframe with the geometry set to Polygons bounding each area.
         Can be used with self.location or any result of self.get_df() (since those have been joined with self.location)
         '''
-        if df is not None:
+        if df is None:
+            print('using self.location')
             df = self.location
         raw_lat_lon_cols = ['lat_1_dd', 'lon_1_dd', 'lat_2_dd','lon_2_dd', 'lat_3_dd', 'lon_3_dd', 'lat_4_dd', 'lon_4_dd']
         df = df[~(
@@ -151,6 +152,7 @@ class Angler(Ccfrp):
         # sub_gdf = gdf[gdf.poly.apply(lambda x: x.is_valid)].dissolve(by=['Area', 'MPA_Status']).reset_index()
         # sub_gdf.loc[sub_gdf.Area == 'Anacapa Island'].total_bounds
         return gdf
+    #
     def melt_df_area(self, df, grouping_vars: list = ['Grid_Cell_ID', 'Area', 'MPA_Status'], **kwargs):
         '''
         Gets a melted dataframe of location info.
