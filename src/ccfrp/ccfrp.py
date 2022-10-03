@@ -15,12 +15,10 @@ class Ccfrp:
                 self.get_raw_data()
         else:
             self.get_raw_data()
-    
     # datetime helper
     def _set_datetimes(self, df, date_var: str = 'Date'):
         df[date_var] = pd.to_datetime(df[date_var])
         return df
-    
     # read raw database
     def get_raw_data(self):
         '''
@@ -31,7 +29,6 @@ class Ccfrp:
         self.length = self._set_datetimes(pd.read_csv('https://cn.dataone.org/cn/v2/resolve/urn%3Auuid%3A870dc9c1-44b5-41bb-861e-106f104f19a0'))
         self.location = pd.read_csv('https://cn.dataone.org/cn/v2/resolve/urn%3Auuid%3A6e056607-dc15-421e-bce1-d1502b22ceaa')
         self.species = pd.read_csv('https://cn.dataone.org/cn/v2/resolve/urn%3Auuid%3A3b70fbd7-c446-494e-8b76-d033ef1685b7', encoding_errors='ignore')
-
     # read local database
     def get_local_data(self):
         self.effort = self._set_datetimes(pd.read_csv(os.path.join(self.db_path, 'effort.csv')))
