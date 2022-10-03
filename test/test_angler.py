@@ -1,15 +1,14 @@
 import sys
 sys.path.append('../src/')
-from angler import Angler
+from ccfrp.angler import Angler
 import pytest
 import pandas as pd
-import goepandas as gpd
+import geopandas as gpd
 
 @pytest.fixture(autouse=False)
 def angler():
     angler = Angler()
     yield angler
-
 
 def test_get_fish_type(angler):
     assert angler.get_fish_type('cab') == 'Cabezon'

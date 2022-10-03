@@ -1,5 +1,5 @@
 from tokenize import group
-from ccfrp import Ccfrp
+from .ccfrp import Ccfrp
 from thefuzz import fuzz, process
 import pandas as pd
 import shapely
@@ -125,7 +125,9 @@ class Angler(Ccfrp):
     # 
     def make_location_polygons(self):
         '''
-        I want to turn the location df into a spatial df right away so that its easier to compute full extent of groups of polygons
+        Compute the extent of the polygons in a geojson type format.
+
+        This is currently redundant with get_location_summary(). Haven't benchmarked to see which is faster, but they both produce valid geojson.
         '''
         df = self.location
         df = df[~(

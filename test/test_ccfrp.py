@@ -2,7 +2,7 @@ import pytest
 import sys
 import pandas as pd
 sys.path.append('../src/')
-from ccfrp import Ccfrp
+from ccfrp.ccfrp import Ccfrp
 
 @pytest.fixture(autouse=False)
 def ccfrp():
