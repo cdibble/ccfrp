@@ -1,0 +1,22 @@
+#
+[build-system]
+requires = ["setuptools>=42", "wheel", "setuptools-git-versioning"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools-git-versioning]
+enabled = true
+
+[project]
+name = "ccfrp"
+dynamic = ["version"]
+dependencies = [
+    "pandas",
+    "flask",
+    "flask_wtf",
+    "plotly_express",
+    "thefuzz[speedup]",
+    "shapely",
+    "geopandas",
+    "geojson",
+    "wtforms"
+    ]
