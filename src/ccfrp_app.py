@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 import sys
 import os
 sys.path.insert(0, os.path.dirname(__file__))
-from angler import Angler
+from ccfrp.angler import Angler
 from wtforms.fields import DateField, SubmitField, SelectField
 from wtforms.validators import InputRequired
 from flask_wtf import FlaskForm

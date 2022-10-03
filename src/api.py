@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify, Blueprint
-from angler import Angler
+from ccfrp.angler import Angler
 
 api = Blueprint('api', __name__, template_folder='templates')
 # ----------
