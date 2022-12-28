@@ -16,6 +16,13 @@ The repo includes a python module and a Flask app.
 pip install .
 ```
 
+Use like
+```python
+from ccfrp.angler import Angler
+from ccfrp.ccfrp import Ccfrp
+```
+
+
 ### Flask app
 Run the Flask app with
 ```bash

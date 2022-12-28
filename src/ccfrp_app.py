@@ -48,55 +48,6 @@ def home_page():
 # -----------
 # Fish Length
 # -----------
-def create_features(df: pd.DataFrame, id_column: str, feat_properties: list = ['Area', 'MPA_Status'], **kwargs):
-    features=[]
-    for grid_cell in df[id_column].unique():
-        gdf = df.loc[df[id_column] == grid_cell]
-        properties={x: gdf[x].unique()[0] for x in feat_properties}
-        all_lats = gdf['value_x'].to_list()
-        all_lons = gdf['value_y'].tolist()
-        feat_i = Feature(
-            id = grid_cell,
-            geometry =
-                Polygon(
-                    coordinates = [[*list(zip(all_lats,all_lons)), *[(all_lats[0], all_lons[0])]]]
-                ),
-            properties=properties
-            )
-        features.append(feat_i)
-    return features
-
-
-def fish_length_map_prep(df: pd.DataFrame = None, common_name: str = None, start_time:str = None, end_time: str = None, id_column: str = 'Grid_Cell_ID', **kwargs):
-    angler = Angler()
-    if df is None:
-        df = angler.get_df(
-            'length',
-            common_name=common_name,
-            start_time=start_time,
-            end_time=end_time,
-            )
-    # have to filter out nas for geojson
-    df = df[~(
-        df['lon_1_dd'].isna() |
-        df['lon_2_dd'].isna() |
-        df['lon_3_dd'].isna() |
-        df['lon_4_dd'].isna() |
-        df['lat_1_dd'].isna() |
-        df['lat_2_dd'].isna() |
-        df['lat_3_dd'].isna() |
-        df['lat_4_dd'].isna()
-    )]
-    if id_column == 'Area_MPA_Status':
-        print('getting area sumary')
-        gdf = angler.melt_df_area(df, **kwargs)
-    else:
-        gdf = angler.melt_df(df, **kwargs)
-    geo = FeatureCollection(create_features(gdf, id_column=id_column, **kwargs))
-    df = df[[id_column, 'Length_cm']].groupby(id_column).mean().reset_index()
-    return df, geo
-
-
 def make_chloropleth_length(df: pd.DataFrame, geo: geojson, locations_column:str='Grid_Cell_ID'):
     fig = px.choropleth_mapbox(
         data_frame=df,
