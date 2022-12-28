@@ -167,7 +167,6 @@ def fish_length_table_post():
         )
 
 #
-
 # Fish Length: MPA Area
 # ## MAPS
 @app.route("/fish/length/map/area", methods = ['GET'])
@@ -287,6 +286,7 @@ def fish_length_table_area_post():
         default_start = form.data.get('start_date'),
         default_end = form.data.get('end_date'),
         )
+
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
