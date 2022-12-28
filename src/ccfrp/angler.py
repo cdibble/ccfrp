@@ -191,7 +191,16 @@ class Angler(Ccfrp):
         df = pd.merge(lons, lats, on = ['Area_MPA_Status']).drop(columns=['variable_x', 'variable_y']).sort_values(['value_y', 'value_x'], ascending=[False, False]) #.groupby(['Area_MPA_Status']).mean().reset_index()
         return df
     #
-    def fish_length_map_prep(self, df: pd.DataFrame = None, common_name: str = None, start_time:str = None, end_time: str = None, id_column: str = 'Grid_Cell_ID', **kwargs):
+    def fish_length_map_prep(
+        self,
+        df: pd.DataFrame = None,
+        common_name: str = None,
+        start_time:str = None,
+        end_time: str = None,
+        id_column: str = 'Grid_Cell_ID',
+        feat_properties: list = ['Area', 'MPA_Status'],
+        **kwargs
+        ):
         if df is None:
             df = self.get_df(
                 'length',
@@ -199,44 +208,40 @@ class Angler(Ccfrp):
                 start_time=start_time,
                 end_time=end_time,
                 )
-        # have to filter out nas for geojson
-        df = df[~(
-            df['lon_1_dd'].isna() |
-            df['lon_2_dd'].isna() |
-            df['lon_3_dd'].isna() |
-            df['lon_4_dd'].isna() |
-            df['lat_1_dd'].isna() |
-            df['lat_2_dd'].isna() |
-            df['lat_3_dd'].isna() |
-            df['lat_4_dd'].isna()
-        )]
-        if id_column == 'Area_MPA_Status':
-            print('getting area sumary')
-            gdf = self.melt_df_area(df, **kwargs)
-        else:
-            gdf = self.melt_df(df, **kwargs)
-        geo = FeatureCollection(self._create_features(gdf, id_column=id_column, **kwargs))
-        df = df[[id_column, 'Length_cm']].groupby(id_column).mean().reset_index()
+        print('getting location summary polygons')
+        locs = self.get_location_summary(df, grouping_vars=[id_column])
+        grouping_cols = list(set([id_column, *feat_properties]))
+        print(f"Grouping by {grouping_cols}")
+        df = df[[*grouping_cols, 'Length_cm']].groupby(grouping_cols).mean().reset_index()
+        gdf = pd.merge(
+            df,
+            locs,
+            how = 'left',
+            on = id_column
+        )
+        geo = self._create_features(gdf, id_column=id_column, feat_properties=feat_properties, **kwargs)
+        # if id_column == 'Area_MPA_Status':
+        #     print('getting area sumary')
+        #     gdf = self.melt_df_area(df, **kwargs)
+        # else:
+        #     gdf = self.melt_df(df, **kwargs)
+        # geo = FeatureCollection(self._create_features(gdf, id_column=id_column, **kwargs))
         return df, geo
-    
+
     @staticmethod
     def _create_features(df: pd.DataFrame, id_column: str, feat_properties: list = ['Area', 'MPA_Status'], **kwargs):
         features=[]
         for grid_cell in df[id_column].unique():
-            gdf = df.loc[df[id_column] == grid_cell]
-            properties={x: gdf[x].unique()[0] for x in feat_properties}
-            all_lats = gdf['value_x'].to_list()
-            all_lons = gdf['value_y'].tolist()
+            sub_df = df.loc[df[id_column] == grid_cell]
+            assert sub_df.shape[0]==1
+            properties={x: sub_df[x].unique()[0] for x in feat_properties}
             feat_i = Feature(
                 id = grid_cell,
-                geometry =
-                    Polygon(
-                        coordinates = [[*list(zip(all_lats,all_lons)), *[(all_lats[0], all_lons[0])]]]
-                    ),
+                geometry = sub_df.geometry.iloc[0],
                 properties=properties
                 )
             features.append(feat_i)
-        return features
+        return FeatureCollection(features)
 
 if __name__=='__main__':
     import os

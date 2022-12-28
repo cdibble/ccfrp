@@ -152,7 +152,9 @@ def fish_length_map_area_post():
         feat_properties=['Area_MPA_Status']
     )
     # kwargs = {"grouping_vars":['Area_MPA_Status'],'feat_properties':['Area_MPA_Status']}
+    print('Area DF- the summarized data to be mapped')
     print(area_df.head())
+    print('Area Geo- the geometries for the mapped data')
     print(area_geo)
     fig = make_chloropleth_length(area_df, area_geo, 'Area_MPA_Status')
     graphJSON = json.dumps([fig], cls=plotly.utils.PlotlyJSONEncoder)
