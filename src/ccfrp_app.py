@@ -44,7 +44,9 @@ def index():
 
 @app.route("/home")
 def home_page():
-    return f"hello. it is {datetime.utcnow()}."
+    return render_template(
+        'base.html'
+    )
 
 # -----------
 # Fish Length
