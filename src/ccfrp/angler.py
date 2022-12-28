@@ -29,7 +29,11 @@ class Angler(Ccfrp):
             n = int(input(f"Select one (enter 0, 1, 2, ...): {ops}"))
             ops = ops[n]
         return ops[0][0]
+    #
     def _join_location(self, df):
+        '''
+        Add the raw location information to the sample data
+        '''
         return pd.merge(
             df,
             self.location[
@@ -108,7 +112,7 @@ class Angler(Ccfrp):
         assert mdf.loc[~mdf.geometry.apply(lambda x: x.is_valid), 'geometry'].empty
         return mdf
     # get fish length or cpue dataframes
-    def get_df(self, type: str, common_name: str = None, monitoring_area: str = None, mpa_only: bool = False, **kwargs):
+    def get_df(self, type: str, common_name: str = None, monitoring_area: str = None, mpa_only: bool = False, join_locations: bool = True, join_species: bool = True, **kwargs):
         if type == 'length':
             fish_df = self.length
         elif type == 'effort':
@@ -122,8 +126,10 @@ class Angler(Ccfrp):
         if mpa_only:
             fish_df = fish_df.loc[fish_df['MPA_Status'] == 'MPA']
         fish_df = self._time_filter(fish_df, **kwargs)
-        fish_df = self._join_location(fish_df)
-        fish_df = self._join_species(fish_df)
+        if join_locations:
+            fish_df = self._join_location(fish_df)
+        if join_species:
+            fish_df = self._join_species(fish_df)
         return fish_df
     # melt dataframe
     def melt_df(self, df, grouping_vars: list = ['Grid_Cell_ID', 'Area', 'MPA_Status'], **kwargs):

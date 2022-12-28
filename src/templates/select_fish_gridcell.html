@@ -4,12 +4,17 @@
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script> -->
   </head>
   <body>
-
-  <form name="form1" method="POST" action='/fish/length/map/gridcell'>
+  <form name="go_home" method="GET" action="/home">
+    <input type="submit" value="Go Home">
+  </form>
+  <h1>Fish Length</h1>
+  <p>Explore fish lengths across MPAs and REF (reference) areas for different regions for every Grid Cell sampled.</p>
+  <form name="form1" method="POST" action="">
     <h3>Start Date. {{ form.start_date (class= "datepicker", value = default_start)}}
     &nbsp End Date. {{ form.end_date (class= "datepicker", value = default_end)}} </h3>
     <h3>Fish Species Name. {{ form.fish_name}}</h3>
-    {{ form.submit }}
+    <input formaction="/fish/length/map/gridcell" type="submit" value="Get Map">
+    <input formaction="/fish/length/table/gridcell" type="submit" value="Get Table">
   </form>
 
 <!-- Table -->
@@ -24,10 +29,7 @@
 <!-- Chart -->
   <div>
     <div>
-      <div id = "chart1" style = "width: 90%; height: 800px;">
-        <p>
-          Chart 1
-        </p>
+      <div id = "chart1" style = "width: 50%; height: 200px;">
       </div>
     </div>
   </div>
