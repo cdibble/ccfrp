@@ -47,7 +47,7 @@ def test_get_location_summary(angler):
     )
     for area in locs.Area:
         if area == 'South Cape Mendocino':
-            # not sure why this one has twi Area/MPA_Status/Grid_Cell_IDs with the same geometry
+            # not sure why this one has two Area/MPA_Status/Grid_Cell_IDs with the same geometry
             continue
         area_locs = locs.loc[locs.Area == area]
         assert len(area_locs.geometry.unique()) == len(area_locs.Grid_Cell_ID.unique())
@@ -63,7 +63,7 @@ def test_make_location_polygons(angler):
     )
     for area in locs.Area:
         if area == 'South Cape Mendocino':
-            # not sure why this one has twi Area/MPA_Status/Grid_Cell_IDs with the same geometry
+            # not sure why this one has two Area/MPA_Status/Grid_Cell_IDs with the same geometry
             continue
         area_locs = locs.loc[locs.Area == area]
         assert len(area_locs.geometry.unique()) == len(area_locs.Grid_Cell_ID.unique())

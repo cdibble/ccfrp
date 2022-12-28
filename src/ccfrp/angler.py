@@ -107,7 +107,24 @@ class Angler(Ccfrp):
         mdf.loc[~mdf.geometry.apply(lambda x: x.is_valid), 'geometry'] = mdf.loc[~mdf.geometry.apply(lambda x: x.is_valid), 'geometry'].apply(lambda y: y.convex_hull)
         assert mdf.loc[~mdf.geometry.apply(lambda x: x.is_valid), 'geometry'].empty
         return mdf
-    #
+    # get fish length or cpue dataframes
+    def get_df(self, type: str, common_name: str = None, monitoring_area: str = None, mpa_only: bool = False, **kwargs):
+        if type == 'length':
+            fish_df = self.length
+        elif type == 'effort':
+            fish_df = self.effort
+        else:
+            raise NotImplementedError(f"df type must be one of: ['length', 'effort']")
+        if common_name:
+            fish_df = fish_df.loc[fish_df['Common_Name'] == common_name]
+        if monitoring_area:
+            fish_df = fish_df.loc[fish_df['Area'] == monitoring_area]
+        if mpa_only:
+            fish_df = fish_df.loc[fish_df['MPA_Status'] == 'MPA']
+        fish_df = self._time_filter(fish_df, **kwargs)
+        fish_df = self._join_location(fish_df)
+        fish_df = self._join_species(fish_df)
+        return fish_df
     # melt dataframe
     def melt_df(self, df, grouping_vars: list = ['Grid_Cell_ID', 'Area', 'MPA_Status'], **kwargs):
         '''
@@ -174,24 +191,64 @@ class Angler(Ccfrp):
         df = pd.merge(lons, lats, on = ['Area_MPA_Status']).drop(columns=['variable_x', 'variable_y']).sort_values(['value_y', 'value_x'], ascending=[False, False]) #.groupby(['Area_MPA_Status']).mean().reset_index()
         return df
     #
-    def get_df(self, type: str, common_name: str = None, monitoring_area: str = None, mpa_only: bool = False, **kwargs):
-        if type == 'length':
-            fish_df = self.length
-        elif type == 'effort':
-            fish_df = self.effort
-        else:
-            raise NotImplementedError(f"df type must be one of: ['length', 'effort']")
-        if common_name:
-            fish_df = fish_df.loc[fish_df['Common_Name'] == common_name]
-        if monitoring_area:
-            fish_df = fish_df.loc[fish_df['Area'] == monitoring_area]
-        if mpa_only:
-            fish_df = fish_df.loc[fish_df['MPA_Status'] == 'MPA']
-        fish_df = self._time_filter(fish_df, **kwargs)
-        fish_df = self._join_location(fish_df)
-        fish_df = self._join_species(fish_df)
-        return fish_df
+    def fish_length_map_prep(
+        self,
+        df: pd.DataFrame = None,
+        common_name: str = None,
+        start_time:str = None,
+        end_time: str = None,
+        id_column: str = 'Grid_Cell_ID',
+        feat_properties: list = ['Area', 'MPA_Status'],
+        **kwargs
+        ):
+        '''
+        Aggregate fish data to the appropriate spatial scale basd on `id_column`
+            and create a geospatial FeatureCollection with specified `feat_properties` that specify the 
+            geometries that match the aggregated fish data.
+        
+        Outputs can be used for Chloropleth/Raster plots.
 
+        Returns
+        ---------
+        DataFrame, FeatureCollection
+            The DataFrame with aggregated fish data and properties.
+            The FeatureCollection with geojson specifying geometries for fish data aggregations.
+        '''
+        if df is None:
+            df = self.get_df(
+                'length',
+                common_name=common_name,
+                start_time=start_time,
+                end_time=end_time,
+                )
+        print('getting location summary polygons')
+        locs = self.get_location_summary(df, grouping_vars=[id_column])
+        grouping_cols = list(set([id_column, *feat_properties]))
+        print(f"Grouping by {grouping_cols}")
+        df = df[[*grouping_cols, 'Length_cm']].groupby(grouping_cols).mean().reset_index()
+        gdf = pd.merge(
+            df,
+            locs,
+            how = 'left',
+            on = id_column
+        )
+        geo = self._create_features(gdf, id_column=id_column, feat_properties=feat_properties, **kwargs)
+        return df, geo
+
+    @staticmethod
+    def _create_features(df: pd.DataFrame, id_column: str, feat_properties: list = ['Area', 'MPA_Status'], **kwargs):
+        features=[]
+        for grid_cell in df[id_column].unique():
+            sub_df = df.loc[df[id_column] == grid_cell]
+            assert sub_df.shape[0]==1
+            properties={x: sub_df[x].unique()[0] for x in feat_properties}
+            feat_i = Feature(
+                id = grid_cell,
+                geometry = sub_df.geometry.iloc[0],
+                properties=properties
+                )
+            features.append(feat_i)
+        return FeatureCollection(features)
 
 if __name__=='__main__':
     import os
