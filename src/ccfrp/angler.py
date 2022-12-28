@@ -201,6 +201,19 @@ class Angler(Ccfrp):
         feat_properties: list = ['Area', 'MPA_Status'],
         **kwargs
         ):
+        '''
+        Aggregate fish data to the appropriate spatial scale basd on `id_column`
+            and create a geospatial FeatureCollection with specified `feat_properties` that specify the 
+            geometries that match the aggregated fish data.
+        
+        Outputs can be used for Chloropleth/Raster plots.
+
+        Returns
+        ---------
+        DataFrame, FeatureCollection
+            The DataFrame with aggregated fish data and properties.
+            The FeatureCollection with geojson specifying geometries for fish data aggregations.
+        '''
         if df is None:
             df = self.get_df(
                 'length',
@@ -220,12 +233,6 @@ class Angler(Ccfrp):
             on = id_column
         )
         geo = self._create_features(gdf, id_column=id_column, feat_properties=feat_properties, **kwargs)
-        # if id_column == 'Area_MPA_Status':
-        #     print('getting area sumary')
-        #     gdf = self.melt_df_area(df, **kwargs)
-        # else:
-        #     gdf = self.melt_df(df, **kwargs)
-        # geo = FeatureCollection(self._create_features(gdf, id_column=id_column, **kwargs))
         return df, geo
 
     @staticmethod
