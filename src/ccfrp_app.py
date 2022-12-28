@@ -20,6 +20,7 @@ import json
 from api import api
 import pandas as pd
 
+
 def create_app():
     app = Flask('ccfrp_app', template_folder='templates')
     app.config['SECRET_KEY'] = 'poopypants'
@@ -109,7 +110,7 @@ def fish_length_map_post():
     all_species=angler.species.Common_Name.unique()
     TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
     form = TimeForm()
-    map_df, geo = fish_length_map_prep(
+    map_df, geo = angler.fish_length_map_prep(
         common_name=form.data.get('fish_name'),
         start_time=form.data.get('start_date'),
         end_time=form.data.get('end_date'),
@@ -144,7 +145,7 @@ def fish_length_map_area_post():
         end_time=form.data.get('end_date')
     )
     fishdf['Area_MPA_Status'] = fishdf['Area'].str.cat(fishdf['MPA_Status'], sep = ' ')
-    area_df, area_geo = fish_length_map_prep(
+    area_df, area_geo = angler.fish_length_map_prep(
         df = fishdf,
         id_column='Area_MPA_Status',
         grouping_vars=['Area_MPA_Status'],
