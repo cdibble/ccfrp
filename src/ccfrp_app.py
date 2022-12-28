@@ -15,10 +15,11 @@ from flask_wtf import FlaskForm
 import plotly_express as px
 import plotly
 import geojson
-from geojson import Polygon, FeatureCollection, dumps, Feature
 import json
 from api import api
 import pandas as pd
+import logging
+module_logger=logging.getLogger('ccfrp_app')
 
 
 def create_app():
@@ -30,17 +31,16 @@ def create_app():
     return app
 
 app = create_app()
+angler = Angler()
 
 class TimeForm(FlaskForm):
     start_date = DateField('start_date')
     end_date = DateField('end_date')
     submit = SubmitField('Submit')
     
-
 @app.route("/")
 def index():
     return render_template('base.html')
-
 
 @app.route("/home")
 def home_page():
@@ -71,44 +71,23 @@ def make_chloropleth_length(df: pd.DataFrame, geo: geojson, locations_column:str
 ###############
 # Routes
 ###############
-@app.route("/fish/length", methods = ['GET', 'POST'])
-def fish_length():
-    angler = Angler()
+# Fish Length: Grid Cell
+@app.route("/fish/length/map/gridcell", methods = ['GET'])
+def fish_length_map_get():
     all_species=angler.species.Common_Name.unique()
     TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
     form = TimeForm()
-    if not form.is_submitted():
-        default_start = angler.length.Date.min().date().isoformat()
-        default_end = (angler.length.Date.max() + timedelta(days=1)).date().isoformat()
-        return render_template(
-            'select_fish_gridcell.html',
-            form = form,
-            default_start = default_start,
-            default_end = default_end
-            )
-    else:
-        df = angler.get_df(
-            'length',
-            common_name=form.data.get('fish_name'),
-            start_time=form.data.get('start_date'),
-            end_time=form.data.get('end_date'),
-            )
-        plot =  px.scatter(df, x="Date", y="Length_cm", color="Area", facet_col='Site')
-        # graphJSON = json.dumps([plot], cls=plotly.utils.PlotlyJSONEncoder)
-        return render_template(
-            'select_fish_gridcell.html',
-            form=form,
-            table = df.sort_values('Date').to_html(),
-            # graphJSON = graphJSON,
-            plt_html=plot.to_html(),
-            default_start = form.data.get('start_date'),
-            default_end = form.data.get('end_date'),
-            )
+    default_start = angler.length.Date.min().date().isoformat()
+    default_end = (angler.length.Date.max() + timedelta(days=1)).date().isoformat()
+    return render_template(
+        'select_fish_gridcell.html',
+        form = form,
+        default_start = default_start,
+        default_end = default_end
+        )
 
 @app.route("/fish/length/map/gridcell", methods = ['POST'])
 def fish_length_map_post():
-    from geojson import Polygon, FeatureCollection, dumps, Feature
-    angler = Angler()
     all_species=angler.species.Common_Name.unique()
     TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
     form = TimeForm()
@@ -120,8 +99,6 @@ def fish_length_map_post():
     )
     fig = make_chloropleth_length(map_df, geo)
     graphJSON = json.dumps([fig], cls=plotly.utils.PlotlyJSONEncoder)
-    # return fig.to_html(full_html=False, include_plotlyjs=False)
-    # return jsonify(fig.to_json())
     return render_template(
         'select_fish_gridcell.html',
         form=form,
@@ -132,10 +109,23 @@ def fish_length_map_post():
         default_end = form.data.get('end_date'),
         )
 
+# Fish Length: MPA Area
+@app.route("/fish/length/map/area", methods = ['GET'])
+def fish_length_map_area_get():
+    all_species=angler.species.Common_Name.unique()
+    TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
+    form = TimeForm()
+    default_start = angler.length.Date.min().date().isoformat()
+    default_end = (angler.length.Date.max() + timedelta(days=1)).date().isoformat()
+    return render_template(
+        'select_fish_area.html',
+        form = form,
+        default_start = default_start,
+        default_end = default_end
+        )
+
 @app.route("/fish/length/map/area", methods = ['POST'])
 def fish_length_map_area_post():
-    # from geojson import Polygon, FeatureCollection, dumps, Feature
-    angler = Angler()
     all_species=angler.species.Common_Name.unique()
     TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
     form = TimeForm()
@@ -154,10 +144,10 @@ def fish_length_map_area_post():
         feat_properties=['Area_MPA_Status']
     )
     # kwargs = {"grouping_vars":['Area_MPA_Status'],'feat_properties':['Area_MPA_Status']}
-    print('Area DF- the summarized data to be mapped')
-    print(area_df.head())
-    print('Area Geo- the geometries for the mapped data')
-    print(area_geo)
+    module_logger.debug('Area DF- the summarized data to be mapped')
+    module_logger.debug(area_df.head())
+    module_logger.debug('Area Geo- the geometries for the mapped data')
+    module_logger.debug(area_geo)
     fig = make_chloropleth_length(area_df, area_geo, 'Area_MPA_Status')
     graphJSON = json.dumps([fig], cls=plotly.utils.PlotlyJSONEncoder)
     return render_template(
@@ -168,38 +158,6 @@ def fish_length_map_area_post():
         plt_html=fig.to_html(),
         default_start = form.data.get('start_date'),
         default_end = form.data.get('end_date'),
-        )
-
-@app.route("/fish/length/map/gridcell", methods = ['GET'])
-def fish_length_map_get():
-    from geojson import Polygon, FeatureCollection, dumps, Feature
-    angler = Angler()
-    all_species=angler.species.Common_Name.unique()
-    TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
-    form = TimeForm()
-    default_start = angler.length.Date.min().date().isoformat()
-    default_end = (angler.length.Date.max() + timedelta(days=1)).date().isoformat()
-    return render_template(
-        'select_fish_gridcell.html',
-        form = form,
-        default_start = default_start,
-        default_end = default_end
-        )
-
-@app.route("/fish/length/map/area", methods = ['GET'])
-def fish_length_map_area_get():
-    from geojson import Polygon, FeatureCollection, dumps, Feature
-    angler = Angler()
-    all_species=angler.species.Common_Name.unique()
-    TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
-    form = TimeForm()
-    default_start = angler.length.Date.min().date().isoformat()
-    default_end = (angler.length.Date.max() + timedelta(days=1)).date().isoformat()
-    return render_template(
-        'select_fish_area.html',
-        form = form,
-        default_start = default_start,
-        default_end = default_end
         )
 
 if __name__ == '__main__':
