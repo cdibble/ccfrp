@@ -187,6 +187,22 @@ def fish_length_table_post():
         common_name=form.data.get('fish_name'),
         start_time=form.data.get('start_date'),
         end_time=form.data.get('end_date')
+    ).drop(
+        columns = [
+            'Year',
+            'Month',
+            'Day',
+            'ID_Cell_per_Trip'
+        ],
+        errors='ignore'
+    )
+    df = pd.merge(
+        df,
+        angler.get_location_summary(df)
+    ).drop(
+        columns = [
+            'lat_1_dd', 'lon_1_dd', 'lat_2_dd','lon_2_dd', 'lat_3_dd', 'lon_3_dd', 'lat_4_dd', 'lon_4_dd', 'lat_center_point_dd', 'lon_center_point_dd', 'species_definition', 'CA_MPA_name_short'
+        ]
     )
     # fig = make_chloropleth_length(map_df, geo)
     # graphJSON = json.dumps([fig], cls=plotly.utils.PlotlyJSONEncoder)

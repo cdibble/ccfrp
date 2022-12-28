@@ -29,7 +29,11 @@ class Angler(Ccfrp):
             n = int(input(f"Select one (enter 0, 1, 2, ...): {ops}"))
             ops = ops[n]
         return ops[0][0]
+    #
     def _join_location(self, df):
+        '''
+        Add the raw location information to the sample data
+        '''
         return pd.merge(
             df,
             self.location[
