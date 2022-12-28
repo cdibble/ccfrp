@@ -37,7 +37,7 @@ class TimeForm(FlaskForm):
     start_date = DateField('start_date')
     end_date = DateField('end_date')
     submit = SubmitField('Submit')
-    
+
 @app.route("/")
 def index():
     return render_template('base.html')
@@ -68,9 +68,11 @@ def make_chloropleth_length(df: pd.DataFrame, geo: geojson, locations_column:str
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     # graphJSON = json.dumps([fig], cls=plotly.utils.PlotlyJSONEncoder)
     return fig
+
 ###############
 # Routes
 ###############
+# ## MAPS
 # Fish Length: Grid Cell
 @app.route("/fish/length/map/gridcell", methods = ['GET'])
 def fish_length_map_get():
@@ -159,6 +161,46 @@ def fish_length_map_area_post():
         default_start = form.data.get('start_date'),
         default_end = form.data.get('end_date'),
         )
+
+# ## TABLES
+@app.route("/fish/length/table/gridcell", methods = ['GET'])
+def fish_length_table_get():
+    all_species=angler.species.Common_Name.unique()
+    TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
+    form = TimeForm()
+    default_start = angler.length.Date.min().date().isoformat()
+    default_end = (angler.length.Date.max() + timedelta(days=1)).date().isoformat()
+    return render_template(
+        'select_fish_gridcell.html',
+        form = form,
+        default_start = default_start,
+        default_end = default_end
+        )
+
+@app.route("/fish/length/table/gridcell", methods = ['POST'])
+def fish_length_table_post():
+    all_species=angler.species.Common_Name.unique()
+    TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
+    form = TimeForm()
+    df = angler.get_df(
+        type = 'length',
+        common_name=form.data.get('fish_name'),
+        start_time=form.data.get('start_date'),
+        end_time=form.data.get('end_date')
+    )
+    # fig = make_chloropleth_length(map_df, geo)
+    # graphJSON = json.dumps([fig], cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template(
+        'select_fish_gridcell.html',
+        form=form,
+        table = df.to_html(),
+        # graphJSON = graphJSON,
+        # plt_html=fig.to_html(),
+        default_start = form.data.get('start_date'),
+        default_end = form.data.get('end_date'),
+        )
+
+#
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
