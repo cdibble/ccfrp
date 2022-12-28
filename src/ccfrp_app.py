@@ -72,8 +72,8 @@ def make_chloropleth_length(df: pd.DataFrame, geo: geojson, locations_column:str
 ###############
 # Routes
 ###############
-# ## MAPS
 # Fish Length: Grid Cell
+# ## MAPS
 @app.route("/fish/length/map/gridcell", methods = ['GET'])
 def fish_length_map_get():
     all_species=angler.species.Common_Name.unique()
@@ -111,7 +111,65 @@ def fish_length_map_post():
         default_end = form.data.get('end_date'),
         )
 
+# ## TABLES
+@app.route("/fish/length/table/gridcell", methods = ['GET'])
+def fish_length_table_get():
+    all_species=angler.species.Common_Name.unique()
+    TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
+    form = TimeForm()
+    default_start = angler.length.Date.min().date().isoformat()
+    default_end = (angler.length.Date.max() + timedelta(days=1)).date().isoformat()
+    return render_template(
+        'select_fish_gridcell.html',
+        form = form,
+        default_start = default_start,
+        default_end = default_end
+        )
+
+@app.route("/fish/length/table/gridcell", methods = ['POST'])
+def fish_length_table_post():
+    all_species=angler.species.Common_Name.unique()
+    TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
+    form = TimeForm()
+    df = angler.get_df(
+        type = 'length',
+        common_name=form.data.get('fish_name'),
+        start_time=form.data.get('start_date'),
+        end_time=form.data.get('end_date')
+    ).drop(
+        columns = [
+            'Year',
+            'Month',
+            'Day',
+            'ID_Cell_per_Trip',
+            'LTM_project_short_code'
+        ],
+        errors='ignore'
+    )
+    df = pd.merge(
+        df,
+        angler.get_location_summary(df)
+    ).drop(
+        columns = [
+            'lat_1_dd', 'lon_1_dd', 'lat_2_dd','lon_2_dd', 'lat_3_dd', 'lon_3_dd', 'lat_4_dd', 'lon_4_dd', 'lat_center_point_dd', 'lon_center_point_dd', 'species_definition', 'CA_MPA_name_short'
+        ]
+    )
+    # fig = make_chloropleth_length(map_df, geo)
+    # graphJSON = json.dumps([fig], cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template(
+        'select_fish_gridcell.html',
+        form=form,
+        table = df.to_html(),
+        # graphJSON = graphJSON,
+        # plt_html=fig.to_html(),
+        default_start = form.data.get('start_date'),
+        default_end = form.data.get('end_date'),
+        )
+
+#
+
 # Fish Length: MPA Area
+# ## MAPS
 @app.route("/fish/length/map/area", methods = ['GET'])
 def fish_length_map_area_get():
     all_species=angler.species.Common_Name.unique()
@@ -163,51 +221,65 @@ def fish_length_map_area_post():
         )
 
 # ## TABLES
-@app.route("/fish/length/table/gridcell", methods = ['GET'])
-def fish_length_table_get():
+@app.route("/fish/length/table/area", methods = ['GET'])
+def fish_length_table_area_get():
     all_species=angler.species.Common_Name.unique()
     TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
     form = TimeForm()
     default_start = angler.length.Date.min().date().isoformat()
     default_end = (angler.length.Date.max() + timedelta(days=1)).date().isoformat()
     return render_template(
-        'select_fish_gridcell.html',
+        'select_fish_area.html',
         form = form,
         default_start = default_start,
         default_end = default_end
         )
 
-@app.route("/fish/length/table/gridcell", methods = ['POST'])
-def fish_length_table_post():
+@app.route("/fish/length/table/area", methods = ['POST'])
+def fish_length_table_area_post():
     all_species=angler.species.Common_Name.unique()
     TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
     form = TimeForm()
+    # Get filtered dataframe
     df = angler.get_df(
         type = 'length',
         common_name=form.data.get('fish_name'),
         start_time=form.data.get('start_date'),
-        end_time=form.data.get('end_date')
+        end_time=form.data.get('end_date'),
+        join_locations=False,
+        join_species=False
     ).drop(
         columns = [
             'Year',
             'Month',
             'Day',
-            'ID_Cell_per_Trip'
+            'ID_Cell_per_Trip',
+            'LTM_project_short_code'
         ],
         errors='ignore'
     )
+    # Aggregate
+    print('aggregating')
+    df = df.groupby(
+        [x for x in df.columns if x not in ['Date', 'Length_cm']],
+        dropna=False
+        ).mean().reset_index()
+    # Add meta data
+    df = angler._join_location(df)
+    df = angler._join_species(df)
+    # summarize location data
     df = pd.merge(
         df,
         angler.get_location_summary(df)
     ).drop(
         columns = [
-            'lat_1_dd', 'lon_1_dd', 'lat_2_dd','lon_2_dd', 'lat_3_dd', 'lon_3_dd', 'lat_4_dd', 'lon_4_dd', 'lat_center_point_dd', 'lon_center_point_dd', 'species_definition', 'CA_MPA_name_short'
+            'lat_1_dd', 'lon_1_dd', 'lat_2_dd','lon_2_dd', 'lat_3_dd', 'lon_3_dd', 'lat_4_dd', 'lon_4_dd', 'lat_center_point_dd', 'lon_center_point_dd', 'species_definition', 'CA_MPA_name_short', 'LTM_project_short_code'
         ]
     )
     # fig = make_chloropleth_length(map_df, geo)
     # graphJSON = json.dumps([fig], cls=plotly.utils.PlotlyJSONEncoder)
     return render_template(
-        'select_fish_gridcell.html',
+        'select_fish_area.html',
         form=form,
         table = df.to_html(),
         # graphJSON = graphJSON,
@@ -215,8 +287,6 @@ def fish_length_table_post():
         default_start = form.data.get('start_date'),
         default_end = form.data.get('end_date'),
         )
-
-#
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
