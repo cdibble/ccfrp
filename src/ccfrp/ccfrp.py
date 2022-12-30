@@ -15,6 +15,9 @@ class Ccfrp:
                 self.get_raw_data()
         else:
             self.get_raw_data()
+        # correct an apparent error in the dataset where for a single date (2020-08-13), Grid_Cell_ID 'BH07' is listed as a MPA site when in fact it should be a REF site.
+        self.effort.loc[(self.effort.Grid_Cell_ID=='BH07') & (self.effort.MPA_Status == 'MPA'), 'MPA_Status'] = 'REF'
+        
     # datetime helper
     def _set_datetimes(self, df, date_var: str = 'Date'):
         df[date_var] = pd.to_datetime(df[date_var])
