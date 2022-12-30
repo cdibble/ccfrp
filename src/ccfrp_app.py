@@ -74,7 +74,7 @@ def make_chloropleth_length(df: pd.DataFrame, geo: geojson, locations_column:str
 ###############
 # Fish Length: Grid Cell
 # ## MAPS
-@app.route("/fish/length/map/gridcell", methods = ['GET', 'POST'])
+@app.route("/length/gridcell/map", methods = ['GET', 'POST'])
 def fish_length_map_get():
     all_species=angler.species.Common_Name.unique()
     TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
@@ -108,7 +108,7 @@ def fish_length_map_get():
             )
 
 # ## TABLES
-@app.route("/fish/length/table/gridcell", methods = ['GET', 'POST'])
+@app.route("/length/gridcell/table", methods = ['GET', 'POST'])
 def fish_length_table_get():
     all_species=angler.species.Common_Name.unique()
     TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
@@ -142,7 +142,7 @@ def fish_length_table_get():
 #
 # Fish Length: MPA Area
 # ## MAPS
-@app.route("/fish/length/map/area", methods = ['GET', 'POST'])
+@app.route("/length/area/map", methods = ['GET', 'POST'])
 def fish_length_map_area_get():
     all_species=angler.species.Common_Name.unique()
     TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
@@ -188,7 +188,7 @@ def fish_length_map_area_get():
             )
 
 # ## TABLES
-@app.route("/fish/length/table/area", methods = ['GET', 'POST'])
+@app.route("/length/area/table", methods = ['GET', 'POST'])
 def fish_length_table_area_get():
     all_species=angler.species.Common_Name.unique()
     TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
@@ -226,8 +226,7 @@ def fish_length_table_area_get():
             default_end = form.data.get('end_date'),
             )
 
-
-@app.route("/fish/table/gridcell", methods = ['GET', 'POST'])
+@app.route("/length/gridcell/table_detail", methods = ['GET', 'POST'])
 def get_table_gridcell():
     all_species=angler.species.Common_Name.unique()
     TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
@@ -275,9 +274,7 @@ def get_table_gridcell():
             default_end = form.data.get('end_date'),
             )
 
-
-
-@app.route("/fish/table/area", methods = ['GET', 'POST'])
+@app.route("/length/area/table_detal", methods = ['GET', 'POST'])
 def get_table_area():
     all_species=angler.species.Common_Name.unique()
     TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
