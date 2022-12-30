@@ -37,16 +37,14 @@ class TimeForm(FlaskForm):
     start_date = DateField('start_date')
     end_date = DateField('end_date')
     submit = SubmitField('Submit')
+    all_species=angler.species.Common_Name.unique()
+    fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
+
 
 @app.route("/")
+@app.route("/home")
 def index():
     return render_template('base.html')
-
-@app.route("/home")
-def home_page():
-    return render_template(
-        'base.html'
-    )
 
 # -----------
 # Fish Length
@@ -76,8 +74,8 @@ def make_chloropleth_length(df: pd.DataFrame, geo: geojson, locations_column:str
 # ## MAPS
 @app.route("/length/gridcell/map", methods = ['GET', 'POST'])
 def fish_length_map_get():
-    all_species=angler.species.Common_Name.unique()
-    TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
+    # all_species=angler.species.Common_Name.unique()
+    # TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
     form = TimeForm()
     if request.method == 'GET':
         default_start = angler.length.Date.min().date().isoformat()
@@ -110,8 +108,6 @@ def fish_length_map_get():
 # ## TABLES
 @app.route("/length/gridcell/table", methods = ['GET', 'POST'])
 def fish_length_table_get():
-    all_species=angler.species.Common_Name.unique()
-    TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
     form = TimeForm()
     if request.method == 'GET':
         default_start = angler.length.Date.min().date().isoformat()
@@ -144,8 +140,6 @@ def fish_length_table_get():
 # ## MAPS
 @app.route("/length/area/map", methods = ['GET', 'POST'])
 def fish_length_map_area_get():
-    all_species=angler.species.Common_Name.unique()
-    TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
     form = TimeForm()
     if request.method == 'GET':
         default_start = angler.length.Date.min().date().isoformat()
@@ -190,8 +184,6 @@ def fish_length_map_area_get():
 # ## TABLES
 @app.route("/length/area/table", methods = ['GET', 'POST'])
 def fish_length_table_area_get():
-    all_species=angler.species.Common_Name.unique()
-    TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
     form = TimeForm()
     if request.method == 'GET':
         default_start = angler.length.Date.min().date().isoformat()
@@ -228,8 +220,6 @@ def fish_length_table_area_get():
 
 @app.route("/length/gridcell/table_detail", methods = ['GET', 'POST'])
 def get_table_gridcell():
-    all_species=angler.species.Common_Name.unique()
-    TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
     form = TimeForm()
     if request.method == 'GET':
         default_start = angler.length.Date.min().date().isoformat()
@@ -276,8 +266,6 @@ def get_table_gridcell():
 
 @app.route("/length/area/table_detal", methods = ['GET', 'POST'])
 def get_table_area():
-    all_species=angler.species.Common_Name.unique()
-    TimeForm.fish_name = SelectField(u'Field name', choices = all_species, validators = [InputRequired()])
     form = TimeForm()
     if request.method == 'GET':
         default_start = angler.length.Date.min().date().isoformat()
